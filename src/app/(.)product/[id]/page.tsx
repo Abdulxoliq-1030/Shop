@@ -5,9 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { ProductType } from "@/interfaces";
 import { Dialog } from "@headlessui/react";
 import CustomImage from "@/components/image";
-import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
-import { StarIcon } from "@heroicons/react/24/solid";
 import ReactStars from "react-stars";
+import { toast } from "react-toastify";
 
 interface PageProps { }
 
@@ -17,6 +16,31 @@ const Page: React.FC<PageProps> = () => {
     const [isOpen, setIsOpen] = useState(true);
     const router = useRouter();
     const { id } = useParams();
+
+    const handleClick = () => {
+        const products: ProductType[] = JSON.parse(localStorage.getItem("carts") as string) || [];
+        const isExistProduct = products.find(c => c.id === product?.id)
+
+        if (isExistProduct) {
+            const updatedData = products.map(c => {
+                if (c.id === product?.id) {
+                    return {
+                        ...c, quantity: c.quantity + 1
+                    }
+                }
+                return c;
+            })
+            localStorage.setItem("carts", JSON.stringify(updatedData))
+        } else {
+
+            const data = [...products, { ...product, quantity: 1 }];
+            localStorage.setItem("carts", JSON.stringify(data))
+        }
+
+        toast("Product added to your bag!!")
+
+    }
+
 
     useEffect(() => {
         async function getData() {
@@ -76,7 +100,7 @@ const Page: React.FC<PageProps> = () => {
                                         </div>
                                     </div>
                                     <div className="space-y-3 text-sm">
-                                        <button className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
+                                        <button onClick={handleClick} className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
                                             Add to bag
                                         </button>
                                         <button
