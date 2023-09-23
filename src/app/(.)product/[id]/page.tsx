@@ -1,29 +1,27 @@
 "use client";
 
-
-import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from "next/navigation"
-import { ProductType } from '@/interfaces';
-import { Dialog } from '@headlessui/react';
-import CustomImage from '@/components/image';
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { ProductType } from "@/interfaces";
+import { Dialog } from "@headlessui/react";
+import CustomImage from "@/components/image";
 import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
-import { StarIcon } from '@heroicons/react/24/solid';
+import { StarIcon } from "@heroicons/react/24/solid";
+import ReactStars from "react-stars";
 
 interface PageProps { }
 
 const Page: React.FC<PageProps> = () => {
-
     const [loading, setLoading] = useState(false);
-    const [product, setProduct] = useState<ProductType>()
+    const [product, setProduct] = useState<ProductType>();
     const [isOpen, setIsOpen] = useState(true);
     const router = useRouter();
     const { id } = useParams();
 
-
     useEffect(() => {
         async function getData() {
             setLoading(true);
-            const res = await fetch(`https://fakestoreapi.com/products/${id}`)
+            const res = await fetch(`https://fakestoreapi.com/products/${id}`);
             const product = await res.json();
             setProduct(product);
             setLoading(false);
@@ -32,10 +30,12 @@ const Page: React.FC<PageProps> = () => {
     }, [id]);
 
     return (
-        <Dialog open={isOpen} onClose={() => {
-            setIsOpen(false);
-            router.back();
-        }}
+        <Dialog
+            open={isOpen}
+            onClose={() => {
+                setIsOpen(false);
+                router.back();
+            }}
             className="relative z-50"
         >
             <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
@@ -53,42 +53,19 @@ const Page: React.FC<PageProps> = () => {
                                 )}
                                 <div className="flex-1 flex flex-col">
                                     <div className="flex-1">
-                                        <h4 className="font-semibold">
-                                            {product?.title}
-                                        </h4>
-                                        <p className="font-medium text-sm">
-                                            {product?.price}
-                                        </p>
-                                        <div className='flex items-center text-sm my-4'>
+                                        <h4 className="font-semibold">{product?.title}</h4>
+                                        <p className="font-medium text-sm">{product?.price}</p>
+                                        <div className="flex items-center text-sm my-4">
                                             <p>{product?.rating.rate}</p>
                                             {product?.rating.rate && (
-                                                <div className='flex items-center ml-2 mr-6'>
-                                                    {Array.from(
-                                                        {
-                                                            length: Math.floor(product.rating.rate),
-                                                        },
-                                                        (_, i) => (
-                                                            <StarIcon
-                                                                key={i}
-                                                                className='h-4 w-4 text-yellow-500'
-                                                            />
-                                                        )
-                                                    )}
-                                                    {Array.from(
-                                                        {
-                                                            length:
-                                                                5 - Math.floor(product.rating.rate),
-                                                        },
-                                                        (_, i) => (
-                                                            <StarIconOutline
-                                                                key={i}
-                                                                className='h-4 w-4 text-yellow-500'
-                                                            />
-                                                        )
-                                                    )}
+                                                <div className="flex items-center ml-2 mr-6">
+                                                    <ReactStars
+                                                        value={product.rating.rate}
+                                                        edit={false}
+                                                    />
                                                 </div>
                                             )}
-                                            <p className='text-blue-600 hover:underline cursor-pointer text-xs'>
+                                            <p className="text-blue-600 hover:underline cursor-pointer text-xs">
                                                 See all {product?.rating.count} reviews
                                             </p>
                                         </div>
@@ -99,8 +76,13 @@ const Page: React.FC<PageProps> = () => {
                                         </div>
                                     </div>
                                     <div className="space-y-3 text-sm">
-                                        <button className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">Add to bag</button>
-                                        <button onClick={() => window.location.reload()} className="button w-full bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent">
+                                        <button className="button w-full bg-blue-600 text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
+                                            Add to bag
+                                        </button>
+                                        <button
+                                            onClick={() => window.location.reload()}
+                                            className="button w-full bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white hover:border-transparent"
+                                        >
                                             View full details
                                         </button>
                                     </div>
@@ -110,9 +92,8 @@ const Page: React.FC<PageProps> = () => {
                     </Dialog.Panel>
                 </div>
             </div>
-
         </Dialog>
-    )
-}
+    );
+};
 
 export default Page;
