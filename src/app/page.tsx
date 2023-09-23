@@ -1,5 +1,7 @@
+import Cta from '@/components/cta';
 import Hero from '@/components/hero';
 import Product from '@/components/product';
+import Statistics from '@/components/statistics';
 import { ProductType } from '@/interfaces';
 import React from 'react'
 
@@ -20,6 +22,8 @@ const HomePage = async () => {
           ))}
         </div>
       </section>
+      <Cta />
+      <Statistics />
     </main>
   )
 }
