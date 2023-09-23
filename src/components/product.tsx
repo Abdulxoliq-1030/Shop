@@ -7,7 +7,6 @@ import { FC } from 'react';
 import CustomImage from './image';
 
 const Product: FC<{ product: ProductType }> = ({ product }) => {
-    console.log(product);
 
     return (
         <Link
