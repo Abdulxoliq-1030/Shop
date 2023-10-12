@@ -27,5 +27,8 @@
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2",
     "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "@netlify/plugin-nextjs": "^4.40.2"
   }
 }
